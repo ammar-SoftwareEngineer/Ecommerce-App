@@ -27,11 +27,21 @@ function Cards({ cardItems }) {
     if (carts.status === true && carts.error === null) {
       toast.dismiss();
       toast.success("The product has been added.");
+  
     } else if (carts.status === false && carts.error) {
       toast.dismiss();
       toast.error(`Error: ${carts.error}`);
     }
-  }, [carts.status, carts.error]);
+    setTimeout(() => {
+      dispatch(
+        UpdateStatePropertyCart({
+          path: "status",
+          value: false,
+        })
+      );
+    }, 1000);
+  }, [carts.status, carts.error,dispatch]);
+console.log(carts);
 
   return (
     <div className="container my-5">

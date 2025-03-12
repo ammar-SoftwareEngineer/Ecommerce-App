@@ -15,6 +15,7 @@ import Loading from "../../components/Loading/Loading";
 
 import { MdArrowBackIos } from "react-icons/md";
 import { UpdateStatePropertyProducts } from "../../store/product/slice/ProductSlice";
+import { UpdateStatePropertyCart } from "../../store/cart/slice/CartSlice";
 function ProductDetails() {
   const { id } = useParams();
   const [showPopup, setShowPopup] = useState(false);
@@ -46,7 +47,15 @@ function ProductDetails() {
       toast.dismiss();
       toast.error(`Error: ${carts.error}`);
     }
-  }, [carts.status, carts.error]);
+     setTimeout(() => {
+          dispatch(
+            UpdateStatePropertyCart({
+              path: "status",
+              value: false,
+            })
+          );
+        }, 1000);
+  }, [carts.status, carts.error,dispatch]);
 
  
   return (
