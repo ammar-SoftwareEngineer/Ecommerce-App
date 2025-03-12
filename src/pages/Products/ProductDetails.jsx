@@ -43,18 +43,27 @@ function ProductDetails() {
     if (carts.status === true && carts.error === null) {
       toast.dismiss();
       toast.success("The product has been added.");
+      setTimeout(() => {
+        dispatch(
+          UpdateStatePropertyCart({
+            path: "status",
+            value: false,
+          })
+        );
+      }, 1000);
     } else if (carts.status === false && carts.error) {
       toast.dismiss();
-      toast.error(`Error: ${carts.error}`);
+      toast.error(`Error: ${carts.error||"error"}`);
+      setTimeout(() => {
+        dispatch(
+          UpdateStatePropertyCart({
+            path: "status",
+            value: false,
+          })
+        );
+      }, 1000);
     }
-     setTimeout(() => {
-          dispatch(
-            UpdateStatePropertyCart({
-              path: "status",
-              value: false,
-            })
-          );
-        }, 1000);
+     
   }, [carts.status, carts.error,dispatch]);
 
  
