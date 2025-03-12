@@ -10,7 +10,7 @@ function CartPage() {
   const dispatch = useDispatch();
   const carts = useSelector((state) => state.carts.allCarts);
   const userId = Number(localStorage.getItem("userID"));
-  const cartsFilter = carts.filter((c) => c.userId === userId);
+  const cartsFilter = carts.filter((c) => c?.userId === userId);
   useEffect(() => {
     dispatch(getAllCarts(userId));
   }, [dispatch, userId]);
@@ -21,7 +21,7 @@ function CartPage() {
         <p className="text-center">There are currently no baskets.</p>
       ) : (
         <div className="row">
-          {cartsFilter.map((cart) => (
+          {cartsFilter?.map((cart) => (
             <div key={cart.id} className="col-12 " data-aos="fade-up">
               <div className="card border-0 border-bottom shadow-sm   rounded-1 h-100 d-flex flex-row align-items-center gap-5 ps-4 ">
                 <div

@@ -13,14 +13,14 @@ import NavCategories from "../layouts/NavCategories/NavCategories";
 function AppRouter() {
   return (
     <Provider store={store}>
-      <BrowserRouter >
+      <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Navigate to="/products" replace />} />
-          <Route path="/products" element={<Home />}>
-            <Route index element={<ProductList />} />
-            <Route path=":id" element={<ProductDetails />} />
-          </Route>
+          <Route path="/" element={<Home />}>
+            <Route index element={<Navigate to="/products" replace />} />
+            <Route path="/products" element={<ProductList />} />
+            <Route path="/products/:id" element={<ProductDetails />} />
           <Route path="/cart" element={<CartPage />} />
+          </Route>
           <Route path="*" element={<Navigate to="/products" replace />} />
         </Routes>
       </BrowserRouter>

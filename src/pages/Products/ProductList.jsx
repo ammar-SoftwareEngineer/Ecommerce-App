@@ -37,7 +37,6 @@ function ProductList() {
         <>
           <Hero />
           <NavCategories />
-
           <Cards
             cardItems={
               categories.oneCategory == []
