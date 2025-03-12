@@ -13,7 +13,7 @@ import NavCategories from "../layouts/NavCategories/NavCategories";
 function AppRouter() {
   return (
     <Provider store={store}>
-      <BrowserRouter basename="/products">
+      <BrowserRouter >
         <Routes>
           <Route path="/" element={<Navigate to="/products" replace />} />
           <Route path="/products" element={<Home />}>
