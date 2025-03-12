@@ -24,7 +24,6 @@ function ProductDetails() {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products);
   const oneProduct = products.oneProduct;
-  console.log(products);
 
   useEffect(() => {
     dispatch(getOneProduct(id));
