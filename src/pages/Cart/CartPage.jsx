@@ -17,7 +17,7 @@ function CartPage() {
   return (
     <div className="container my-4" style={{ height: "80vh" }}>
       <h2 className="mb-4">Carts</h2>
-      {carts.length === 0 ? (
+      {carts?.length == 0 ? (
         <p className="text-center">There are currently no baskets.</p>
       ) : (
         <div className="row">
