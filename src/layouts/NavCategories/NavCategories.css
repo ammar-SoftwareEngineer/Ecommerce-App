@@ -1,0 +1,11 @@
+.category {
+  transition: all 0.3s;
+  cursor: pointer;
+  font-weight: 600;
+
+}
+.category:hover {
+  padding: 4px 12px;
+  background-color: #e5d7cc;
+  border-radius: 20px;
+}
