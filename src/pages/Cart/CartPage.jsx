@@ -42,7 +42,7 @@ function CartPage() {
                   {cart.products.map((product, index) => (
                     <div key={index} className="mb-2">
                       <p className="mb-1 " style={{fontSize:"14px"}}>
-                        <strong>Product # {product.productId}</strong> -
+                        <strong>Product # {product?.productId}</strong> -
                         quantity {product.quantity || 1}
                       </p>
                     </div>
