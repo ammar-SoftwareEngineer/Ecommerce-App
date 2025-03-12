@@ -23,8 +23,8 @@ function ProductList() {
   const dispatchCategories = useDispatch();
   const categories = useSelector((state) => state.categories);
   const oneCategory = useSelector((state) => state.localData.category);
-const carts = useSelector((state) => state.carts);
-console.log(carts);
+
+
   useEffect(() => {
     dispatch(getAllProducts());
     dispatchCategories(getOneCategory(oneCategory));

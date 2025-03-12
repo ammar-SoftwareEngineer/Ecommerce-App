@@ -8,7 +8,7 @@ function NavCategories() {
   const dispatch = useDispatch();
   const categories = useSelector((state) => state.categories);
   const dispatchCategories = useDispatch();
-  // const category = useSelector((state) => state.localData);
+
 
   useEffect(() => {
     dispatch(getAllCategories());

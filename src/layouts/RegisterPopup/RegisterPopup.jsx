@@ -9,7 +9,6 @@ function RegisterPopup({ onClose }) {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.users);
 
-  console.log(users);
 
   // إعداد useFormik
   const formik = useFormik({

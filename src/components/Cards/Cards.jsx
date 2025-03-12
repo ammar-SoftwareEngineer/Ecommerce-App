@@ -15,7 +15,7 @@ function Cards({ cardItems }) {
   const [selectedItems, setSelectedItems] = useState([]);
   const dispatch = useDispatch();
   const carts = useSelector((state) => state.carts);
-  console.log(carts.addCarts);
+
   useEffect(() => {
     const user = localStorage.getItem("userID");
 
@@ -31,8 +31,8 @@ function Cards({ cardItems }) {
       toast.dismiss();
       toast.error(`Error: ${carts.error}`);
     }
-  }, [carts.status, carts.error, dispatch]);
-  console.log(selectedItems);
+  }, [carts.status, carts.error]);
+
 
   return (
     <div className="container my-5">
