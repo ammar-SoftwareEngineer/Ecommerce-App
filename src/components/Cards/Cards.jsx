@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import "./Cards.css";
 import { useNavigate } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
@@ -35,10 +35,9 @@ function Cards({ cardItems }) {
           })
         );
       }, 1000);
-  
     } else if (carts.status === false && carts.error) {
       toast.dismiss();
-      toast.error(`Error: ${carts.error||"error"}`);
+      toast.error(`Error: ${carts.error || "error"}`);
       setTimeout(() => {
         dispatch(
           UpdateStatePropertyCart({
@@ -48,9 +47,49 @@ function Cards({ cardItems }) {
         );
       }, 1000);
     }
-  
-  }, [carts.status, carts.error,dispatch]);
+  }, [carts.status, carts.error, dispatch]);
+  const toggleItemSelection = useCallback(
+    (item) => {
+      if (!item || !item.id) {
+        toast.error("Error: Product not identified.");
+        return;
+      }
 
+      setSelectedItems((prevSelectedItems) => {
+        const isAlreadySelected = prevSelectedItems.some(
+          (product) => product === item.id
+        );
+
+        if (isAlreadySelected) {
+          return prevSelectedItems.filter((product) => product.id !== item.id);
+        } else {
+          return [
+            ...prevSelectedItems,
+            {
+              ...item,
+            },
+          ];
+        }
+      });
+      if (!isLoggedIn) {
+        setShowPopup(true);
+      } else {
+        if (selectedItems === 0) {
+          toast.error("Please select at least one product.");
+          return;
+        }
+        dispatch(
+          addCarts({
+            userId: Number(localStorage.getItem("userID")),
+            products: selectedItems,
+          })
+        );
+      }
+    },
+    [dispatch, isLoggedIn, selectedItems]
+  ); // useCallback لضمان استقرار الدالة
+
+  console.log(selectedItems);
 
   return (
     <div className="container my-5">
@@ -74,7 +113,7 @@ function Cards({ cardItems }) {
                   onClick={() => navigate(`/products/${item.id}`)}
                 />
               </div>
-              <div className="card-body d-flex flex-column">
+              <div className="card-body d-flex flex-column ">
                 <h5
                   className="card-title fs-6 fw-bold"
                   style={{ cursor: "pointer" }}
@@ -102,33 +141,18 @@ function Cards({ cardItems }) {
                   </div>
                 </div>
                 <button
-                  className="btn btn-warning text-uppercase"
+                  className={`btn btn-sm  ${
+                    selectedItems.some((product) => product.id === item.id)
+                      ? "btn-success"
+                      : "btn-outline-warning"
+                  }`}
                   onClick={() => {
-                    setSelectedItems((prevSelectedItems) => {
-                      return [
-                        ...prevSelectedItems,
-                        {
-                          id: item.id,
-                          title: item.title,
-                          price: item.price,
-                          description: item.description,
-                          category: item.category,
-                          image: item.image,
-                        },
-                      ];
-                    });
-
-                    isLoggedIn
-                      ? dispatch(
-                          addCarts({
-                            userId: Number(localStorage.getItem("userID")),
-                            products: selectedItems,
-                          })
-                        )
-                      : setShowPopup(true);
+                    toggleItemSelection(item);
                   }}
                 >
-                  Add to Cart
+                  {selectedItems.some((product) => product.id === item.id)
+                    ? "Selected"
+                    : "Add To Cart"}
                 </button>
               </div>
             </div>
