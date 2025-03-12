@@ -1,9 +1,11 @@
 // Hooks React
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 
+import RegisterPopup from "../../layouts/RegisterPopup/RegisterPopup";
+import addCarts from "../../store/cart/api/Post/addCarts";
 // Redux
 import { useDispatch, useSelector } from "react-redux";
-
+import { Toaster, toast } from "react-hot-toast";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
@@ -15,6 +17,9 @@ import { MdArrowBackIos } from "react-icons/md";
 import { UpdateStatePropertyProducts } from "../../store/product/slice/ProductSlice";
 function ProductDetails() {
   const { id } = useParams();
+  const [showPopup, setShowPopup] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [selectedItems, setSelectedItems] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products);
@@ -24,10 +29,31 @@ function ProductDetails() {
   useEffect(() => {
     dispatch(getOneProduct(id));
   }, [dispatch, id]);
+  const dispatchCarts = useDispatch();
+  const carts = useSelector((state) => state.carts);
 
+  useEffect(() => {
+    const user = localStorage.getItem("userID");
+
+    if (user !== undefined && user !== null) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+  useEffect(() => {
+    if (carts.status === true && carts.error === null) {
+      toast.dismiss();
+      toast.success("The product has been added.");
+    } else if (carts.status === false && carts.error) {
+      toast.dismiss();
+      toast.error(`Error: ${carts.error}`);
+    }
+  }, [carts.status, carts.error]);
+
+ 
   return (
     <>
       <div className="px-4 mt-4">
+          <Toaster position="top-center" reverseOrder={false} />
         <button
           className="btn d-flex align-items-center"
           onClick={() => {
@@ -94,13 +120,37 @@ function ProductDetails() {
               <p className="text-muted mb-4 mt-4">{oneProduct.description}</p>
 
               <div className="d-flex align-items-center gap-2 ">
-                <button className="btn btn-warning text-white flex-grow-1">
+                <button className="btn btn-warning text-white flex-grow-1"  onClick={() => {
+                    setSelectedItems((prevSelectedItems) => {
+                      return [
+                        ...prevSelectedItems,
+                        {
+                          id: oneProduct.id,
+                          title: oneProduct.title,
+                          price: oneProduct.price,
+                          description: oneProduct.description,
+                          category: oneProduct.category,
+                          image: oneProduct.image,
+                        },
+                      ];
+                    });
+
+                    isLoggedIn
+                      ? dispatchCarts(
+                          addCarts({
+                            userId: Number(localStorage.getItem("userID")),
+                            products: selectedItems,
+                          })
+                        )
+                      : setShowPopup(true);
+                  }}>
                   ADD TO CART
                 </button>
               </div>
             </div>
           </div>
         )}
+         {showPopup && <RegisterPopup onClose={() => setShowPopup(false)} />}
       </div>
     </>
   );

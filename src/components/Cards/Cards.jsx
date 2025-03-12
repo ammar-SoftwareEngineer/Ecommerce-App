@@ -33,7 +33,6 @@ function Cards({ cardItems }) {
     }
   }, [carts.status, carts.error]);
 
- 
   return (
     <div className="container my-5">
       <Toaster position="top-center" reverseOrder={false} />
@@ -53,6 +52,7 @@ function Cards({ cardItems }) {
                   className="p-4 object-fit-contain"
                   alt={item.title}
                   loading="lazy"
+                  onClick={() => navigate(`/products/${item.id}`)}
                 />
               </div>
               <div className="card-body d-flex flex-column">
